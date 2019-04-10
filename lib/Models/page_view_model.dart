@@ -53,7 +53,7 @@ class PageViewModel {
       this.iconColor,
       @required this.title,
       @required this.body,
-      @required this.mainImage,
+      this.mainImage,
       this.bubble,
       this.textStyle});
 
