@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 
 /// This is the class which contains the Page UI.
-class Page extends StatelessWidget {
+class Page extends StatefulWidget {
   ///page details
   final PageViewModel pageViewModel;
 
@@ -20,19 +20,24 @@ class Page extends StatelessWidget {
   });
 
   @override
+  _PageState createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  @override
   Widget build(BuildContext context) {
     return new Container(
       padding: const EdgeInsets.all(8.0),
       width: double.infinity,
-      color: pageViewModel.pageColor,
+      color: widget.pageViewModel.pageColor,
       child: new Opacity(
         //Opacity is used to create fade in effect
-        opacity: percentVisible,
+        opacity: widget.percentVisible,
         child: new OrientationBuilder(
             builder: (BuildContext context, Orientation orientation) {
           return orientation == Orientation.portrait
               ? _buildPortraitPage()
-              : __buildLandscapePage();
+              : _buildPortraitPage();
         }), //OrientationBuilder
       ),
     );
@@ -40,33 +45,36 @@ class Page extends StatelessWidget {
 
   /// when device is Portrait place title, image and body in a column
   Widget _buildPortraitPage() {
-    return new Column(
-      mainAxisAlignment: columnMainAxisAlignment,
-      mainAxisSize: MainAxisSize.max,
+    return SafeArea(
+        child: new Stack(
       children: <Widget>[
-        Flexible(
-          flex: 1,
-          child: new _TitlePageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
+        Container(
+          child: Column(
+            children: <Widget>[
+              Flexible(
+                child: ListView(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.center,
+                      child: new _TitlePageTransform(
+                        percentVisible: widget.percentVisible,
+                        pageViewModel: widget.pageViewModel,
+                      ),
+                    ),
+                    Container(
+                      child: new _BodyPageTransform(
+                        percentVisible: widget.percentVisible,
+                        pageViewModel: widget.pageViewModel,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-        ), //Transform
-        Expanded(
-          flex: 4,
-          child: new _ImagePageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
-          ),
-        ), //Transform
-        Flexible(
-          flex: 2,
-          child: new _BodyPageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
-          ),
-        ), //Transform
+        )
       ],
-    );
+    ));
   }
 
   /// if Device is Landscape reorder with row and column
@@ -77,23 +85,23 @@ class Page extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: new _ImagePageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
+            percentVisible: widget.percentVisible,
+            pageViewModel: widget.pageViewModel,
           ),
         ), //Transform
 
         new Flexible(
           child: new Column(
-            mainAxisAlignment: columnMainAxisAlignment,
+            mainAxisAlignment: widget.columnMainAxisAlignment,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               new _TitlePageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
+                percentVisible: widget.percentVisible,
+                pageViewModel: widget.pageViewModel,
               ), //Transform
               new _BodyPageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
+                percentVisible: widget.percentVisible,
+                pageViewModel: widget.pageViewModel,
               ), //Transform
             ],
           ), // Column
@@ -104,9 +112,8 @@ class Page extends StatelessWidget {
 }
 
 /// Body for the Page.
-class _BodyPageTransform extends StatelessWidget {
+class _BodyPageTransform extends StatefulWidget {
   final double percentVisible;
-
   final PageViewModel pageViewModel;
 
   const _BodyPageTransform({
@@ -116,11 +123,16 @@ class _BodyPageTransform extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _BodyPageTransformState createState() => _BodyPageTransformState();
+}
+
+class _BodyPageTransformState extends State<_BodyPageTransform> {
+  @override
   Widget build(BuildContext context) {
     return new Transform(
       //Used for vertical transformation
-      transform:
-          new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
+      transform: new Matrix4.translationValues(
+          0.0, 30.0 * (1 - widget.percentVisible), 0.0),
       child: new Padding(
         padding: const EdgeInsets.only(
           bottom: 75.0,
@@ -128,9 +140,9 @@ class _BodyPageTransform extends StatelessWidget {
           right: 10.0,
         ),
         child: DefaultTextStyle.merge(
-          style: pageViewModel.bodyTextStyle,
+          style: widget.pageViewModel.bodyTextStyle,
           textAlign: TextAlign.center,
-          child: pageViewModel.body,
+          child: widget.pageViewModel.body,
         ),
       ), //Padding
     );
