@@ -27,7 +27,7 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: widget.pageViewModel.pagePadding ?? const EdgeInsets.all(8.0),
       width: double.infinity,
       color: widget.pageViewModel.pageColor,
       child: new Opacity(
