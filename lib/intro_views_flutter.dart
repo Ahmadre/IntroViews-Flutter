@@ -27,6 +27,9 @@ class IntroViewsFlutter extends StatefulWidget {
   /// gets overiden by [pageButtonTextStyles]
   final Color pageButtonsColor;
 
+  /// Whether to show the dot-indicators at the bottom of each page
+  final bool showPageIndicators;
+
   /// Whether you want to show the skip button or not.
   final bool showSkipButton;
 
@@ -101,6 +104,7 @@ class IntroViewsFlutter extends StatefulWidget {
     this.showSkipButton = true,
     this.pageButtonTextStyles,
     this.onTapBackButton,
+    this.showPageIndicators = true,
     this.showNextButton = false,
     this.showBackButton = false,
     this.pageButtonTextSize = 18.0,
@@ -251,7 +255,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
                 columnMainAxisAlignment: widget.columnMainAxisAlignment),
           ), //PageReveal
 
-          PagerIndicator(
+          widget.showPageIndicators == true ? PagerIndicator(
             //bottom page indicator
             viewModel: PagerIndicatorViewModel(
               pages,
@@ -259,7 +263,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
               slideDirection,
               slidePercent,
             ),
-          ), //PagerIndicator
+          ) : Container(), //PagerIndicator
 
           PageIndicatorButtons(
             //Skip and Done Buttons

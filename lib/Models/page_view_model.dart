@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 //view model for pages
 
 class PageViewModel {
+  /// Padding for the page
+  final EdgeInsets pagePadding;
+
   /// Page BackGround Color
   final Color pageColor;
 
@@ -47,7 +50,8 @@ class PageViewModel {
   final Widget bubble;
 
   PageViewModel(
-      {this.pageColor,
+      {this.pagePadding,
+      this.pageColor,
       this.iconImageAssetPath,
       this.bubbleBackgroundColor = const Color(0x88FFFFFF),
       this.iconColor,
