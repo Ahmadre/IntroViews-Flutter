@@ -30,6 +30,7 @@ class _PageState extends State<Page> {
       padding: widget.pageViewModel.pagePadding ?? const EdgeInsets.all(8.0),
       width: double.infinity,
       color: widget.pageViewModel.pageColor,
+      alignment: Alignment.center,
       child: new Opacity(
         //Opacity is used to create fade in effect
         opacity: widget.percentVisible,
@@ -46,13 +47,10 @@ class _PageState extends State<Page> {
   /// when device is Portrait place title, image and body in a column
   Widget _buildPortraitPage() {
     return SafeArea(
-        child: new Stack(
-      children: <Widget>[
-        Container(
-          child: Column(
-            children: <Widget>[
-              Flexible(
-                child: ListView(
+        child: Center(
+          child: ListView(
+                  //itemExtent: MediaQuery.of(context).size.height,
+                  shrinkWrap: true,
                   children: <Widget>[
                     Container(
                       alignment: Alignment.center,
@@ -62,6 +60,7 @@ class _PageState extends State<Page> {
                       ),
                     ),
                     Container(
+                      alignment: Alignment.center,
                       child: new _BodyPageTransform(
                         percentVisible: widget.percentVisible,
                         pageViewModel: widget.pageViewModel,
@@ -69,12 +68,8 @@ class _PageState extends State<Page> {
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
-        )
-      ],
-    ));
+        ),
+    );
   }
 
   /// if Device is Landscape reorder with row and column
